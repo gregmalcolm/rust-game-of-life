@@ -1,0 +1,2 @@
+#!/bin/bash
+rust test src/*/test.rs

@@ -1,0 +1,5 @@
+#!/bin/bash
+rm -rf .rust build lib
+rustpkg build cell
+rustpkg build world
+rustpkg build game_of_life

@@ -25,10 +25,35 @@ impl Cells {
     pub fn neighbor_count(&self, x: int, y: int) -> uint {
         use std::num::abs;
 
-        let mut count = 0;
         self.live_cells.iter().filter(|&cell|
-            abs((*cell).x - x) <= 1 && abs((*cell).y - y) <= 1
+            ((*cell).x != x || (*cell).y != y)
+            && abs((*cell).x - x) <= 1 && abs((*cell).y - y) <= 1
         ).len()
+    }
+
+    pub fn is_alive(&self, x: int, y: int) -> bool {
+        self.live_cells.iter().filter(|&cell|
+            (*cell).x == x && (*cell).y == y
+        ).len() > 0
+    }
+
+    pub fn is_alive_next_go(&self, x: int, y: int) -> bool {
+        if self.is_alive(x, y) {
+            self.is_still_alive(x, y)
+        } else {
+            !self.is_still_dead(x, y)
+        }
+    }
+
+    fn is_still_alive(&self, x: int, y: int) -> bool {
+        match self.neighbor_count(x, y) {
+            2..3 => true,
+            _    => false
+        }
+    }
+
+    fn is_still_dead(&self, x: int, y: int) -> bool {
+        self.neighbor_count(x, y) != 3
     }
 }
 

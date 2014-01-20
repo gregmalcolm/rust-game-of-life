@@ -5,13 +5,13 @@ mod neighbor_count {
 
     #[test]
     fn when_there_are_no_live_neighbors_then_count_is_0() {
-        let cells = Cells { live_cells: ~[] };
+        let cells = Cells::new();
         assert!( cells.neighbor_count(0, 0) == 0 );
     }
 
     #[test]
     fn when_there_are_2_live_neighbors_then_count_is_2() {
-        let mut cells = Cells { live_cells: ~[] };
+        let mut cells = Cells::new();
         cells.add_live_cell(-1, -1);
         cells.add_live_cell(1, 0);
         assert!( cells.neighbor_count(0, 0) == 2 );

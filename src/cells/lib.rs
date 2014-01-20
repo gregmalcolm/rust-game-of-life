@@ -23,7 +23,12 @@ impl Cells {
     }
 
     pub fn neighbor_count(&self, x: int, y: int) -> uint {
-        self.live_cells.len()
+        use std::num::abs;
+
+        let mut count = 0;
+        self.live_cells.iter().filter(|&cell|
+            abs((*cell).x - x) <= 1 && abs((*cell).y - y) <= 1
+        ).len()
     }
 }
 

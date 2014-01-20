@@ -12,22 +12,18 @@ mod neighbor_count {
 
     #[test]
     fn when_there_are_2_live_neighbors() {
-        let mut subject = Cells::new();
-        subject.add_live_cell(-1, -1);
-        subject.add_live_cell(1, 0);
-
+        let subject = Cells::new_map(-1, -1, ~["*  ",
+                                               " A*"]);
         assert!( subject.neighbor_count(0, 0) == 2 );
     }
 
     #[test]
     fn only_counts_neighboring_cells() {
-        let mut subject = Cells::new();
-        subject.add_live_cell(1, 0);
-
-        subject.add_live_cell(2, -3);
-        subject.add_live_cell(2, 1);
-        subject.add_live_cell(0, -1);
-        subject.add_live_cell(4, -1);
+        let subject = Cells::new_map(0, -3, ~["  *  ",
+                                              "     ",
+                                              "* A *",
+                                              " *   ",
+                                              "  *  "]);
 
         assert!( subject.neighbor_count(2, -1) == 1 );
     }
@@ -44,8 +40,7 @@ mod is_alive {
 
     #[test]
     fn when_alive() {
-        let mut subject = Cells::new();
-        subject.add_live_cell(3, 2);
+        let subject = Cells::new_map(3, 2, ~["A"]);
         assert!( subject.is_alive(3, 2) );
     }
 }
@@ -55,43 +50,35 @@ mod is_alive_next_go {
     mod given_focus_cell_is_alive {
         use cells::Cells;
 
-        fn setup() -> Cells {
-            let mut subject = Cells::new();
-            subject.add_live_cell(0, 0);
-            subject
-        }
-
         #[test]
         fn when_there_is_1_live_neighbor() {
-            let mut subject = setup();
-            subject.add_live_cell(0, 1);
+            let subject = Cells::new_map(-1, -1, ~["   ",
+                                                   " A ",
+                                                   " * "]);
             assert!( !subject.is_alive_next_go(0, 0) );
         }
 
         #[test]
         fn when_there_are_2_live_neighbors() {
-            let mut subject = setup();
-            subject.add_live_cell(-1, 0);
-            subject.add_live_cell(0, 1);
+            let subject = Cells::new_map(-1, -1, ~["  *",
+                                                   " A ",
+                                                   "*  "]);
             assert!( subject.is_alive_next_go(0, 0) );
         }
 
         #[test]
         fn when_there_are_3_live_neighbors() {
-            let mut subject = setup();
-            subject.add_live_cell(-1, 0);
-            subject.add_live_cell(0, 1);
-            subject.add_live_cell(1, 0);
+            let subject = Cells::new_map(-1, -1, ~["* *",
+                                                   " A ",
+                                                   "  *"]);
             assert!( subject.is_alive_next_go(0, 0) );
         }
 
         #[test]
         fn when_there_are_4_live_neighbors() {
-            let mut subject = setup();
-            subject.add_live_cell(-1, -1);
-            subject.add_live_cell(-1, 0);
-            subject.add_live_cell(-1, 1);
-            subject.add_live_cell(0, 1);
+            let subject = Cells::new_map(-1, -1, ~["   ",
+                                                   "*A ",
+                                                   "***"]);
             assert!( !subject.is_alive_next_go(0, 0) );
         }
     }
@@ -101,35 +88,33 @@ mod is_alive_next_go {
 
         #[test]
         fn when_there_is_1_live_neighbor() {
-            let mut subject = Cells::new();
-            subject.add_live_cell(0, 1);
+            let subject = Cells::new_map(-1, -1, ~["   ",
+                                                   " D*",
+                                                   "   "]);
             assert!( !subject.is_alive_next_go(0, 0) );
         }
 
         #[test]
         fn when_there_are_2_live_neighbors() {
-            let mut subject = Cells::new();
-            subject.add_live_cell(-1, 0);
-            subject.add_live_cell(0, 1);
+            let subject = Cells::new_map(-1, -1, ~["*  ",
+                                                   " D*",
+                                                   "   "]);
             assert!( !subject.is_alive_next_go(0, 0) );
         }
 
         #[test]
         fn when_there_are_3_live_neighbors() {
-            let mut subject = Cells::new();
-            subject.add_live_cell(-1, 0);
-            subject.add_live_cell(0, 1);
-            subject.add_live_cell(1, 0);
+            let subject = Cells::new_map(-1, -1, ~["   ",
+                                                   "*D*",
+                                                   "*  "]);
             assert!( subject.is_alive_next_go(0, 0) );
         }
 
         #[test]
         fn when_there_are_4_live_neighbors() {
-            let mut subject = Cells::new();
-            subject.add_live_cell(-1, -1);
-            subject.add_live_cell(-1, 0);
-            subject.add_live_cell(-1, 1);
-            subject.add_live_cell(0, 1);
+            let subject = Cells::new_map(-1, -1, ~["*  ",
+                                                   "*D*",
+                                                   "  *"]);
             assert!( !subject.is_alive_next_go(0, 0) );
         }
     }

@@ -4,7 +4,7 @@ pub struct Location {
 }
 
 pub struct Cells {
-    live_cells: ~[Location]
+    live_cells:  ~[Location]
 }
 
 impl Location {
@@ -47,6 +47,23 @@ impl Cells {
             self.is_still_alive(x, y)
         } else {
             !self.is_still_dead(x, y)
+        }
+    }
+
+    pub fn live_cells<'a>(&'a self) -> &'a~[Location] {
+        &self.live_cells
+    }
+
+    pub fn randomize(&mut self, width: uint, height: uint, chance_of_life: uint) {
+        use std::rand::Rng;
+        self.live_cells.truncate(0);
+        for y in range(0, height - 1) {
+            for x in range(0, width - 1) {
+                let r = std::rand::rng().gen_integer_range(0, 100) as uint;
+                if r <= chance_of_life {
+                    self.live_cells.push(Location{x: x as int, y: y as int})
+                }
+            }
         }
     }
 

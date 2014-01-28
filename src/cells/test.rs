@@ -119,3 +119,17 @@ mod is_alive_next_go {
         }
     }
 }
+
+mod snapshot {
+    use cells::Cells;
+
+    #[test]
+    fn snapshot_of_all_current_live_cells() {
+        let subject = Cells::new_map(0, 0, ~[" * *   *",
+                                                 "    *   ",
+                                                 "*       "]);
+        let cells = subject.live_cells();
+        assert!(cells.len() == 5);
+    }
+
+}

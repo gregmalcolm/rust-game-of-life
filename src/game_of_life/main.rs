@@ -1,5 +1,8 @@
 extern mod cells;
+extern mod view;
+
+use view::View;
 
 fn main() {
-    println("Game of life!");
+    View::new();
 }

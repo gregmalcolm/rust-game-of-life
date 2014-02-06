@@ -1,2 +1,2 @@
 #!/bin/bash
-rust test src/*/test.rs
+rustc --test src/*/test.rs

@@ -4,7 +4,9 @@ pub struct Location {
 }
 
 pub struct Cells {
-    live_cells:  ~[Location]
+    live_cells:  ~[Location],
+    width: int,
+    height: int
 }
 
 impl Location {
@@ -15,12 +17,30 @@ impl Location {
 
 impl Cells {
     pub fn new() -> Cells {
-        Cells { live_cells: ~[] }
+        Cells { live_cells: ~[],
+                width: 100,
+                height: 100}
     }
     pub fn new_map(off_x: int, off_y: int, cells_map:~[&str]) -> Cells {
         let mut cells = Cells::new();
         cells.add_live_cell_map(off_x, off_y, cells_map);
         cells
+    }
+
+    pub fn left(&self) -> int {
+        -(self.width / 2)
+    }
+
+    pub fn right(&self) -> int {
+        (self.width / 2)
+    }
+
+    pub fn top(&self) -> int {
+        -(self.height / 2)
+    }
+
+    pub fn bottom(&self) -> int {
+        (self.height / 2)
     }
 
     pub fn add_live_cell(&mut self, x: int, y: int) {
@@ -50,18 +70,29 @@ impl Cells {
         }
     }
 
-    pub fn live_cells<'a>(&'a self) -> &'a~[Location] {
-        &self.live_cells
+    pub fn live_cells(&self, off_x: int, off_y: int,
+                                    width: int, height: int)
+    -> ~[Location] {
+        let mut cells = ~[];
+        let right = off_x + width;
+        let bottom = off_y + height;
+        for cell in self.live_cells.iter().filter(|&cell|
+            (*cell).x >= off_x && (*cell).x <= right
+            && (*cell).y >= off_y && (*cell).y <= bottom
+        ) {
+            cells.push(*cell)
+        }
+        cells
     }
 
-    pub fn randomize(&mut self, width: uint, height: uint, chance_of_life: uint) {
+    pub fn randomize(&mut self, chance_of_life: uint) {
         use std::rand::Rng;
         self.live_cells.truncate(0);
-        for y in range(0, height - 1) {
-            for x in range(0, width - 1) {
-                let r = std::rand::rng().gen_integer_range(0, 100) as uint;
+        for y in range(self.top(), self.bottom()) {
+            for x in range(self.left(), self.right()) {
+                let r = std::rand::rng().gen_range(0, 100) as uint;
                 if r <= chance_of_life {
-                    self.live_cells.push(Location{x: x as int, y: y as int})
+                    self.live_cells.push(Location{x: x, y: y});
                 }
             }
         }

@@ -133,3 +133,49 @@ mod snapshot {
     }
 
 }
+
+mod left {
+    use cells::Cells;
+
+    #[test]
+    fn default_value() {
+        let subject = Cells::new();
+        let left = subject.left();
+        assert!(left == -100);
+    }
+}
+
+mod right {
+    use cells::Cells;
+
+    #[test]
+    fn default_value() {
+        let subject = Cells::new();
+        let right = subject.right();
+        assert!(right == 100);
+    }
+}
+
+mod top {
+    use cells::Cells;
+
+    #[test]
+    fn default_value() {
+        let subject = Cells::new();
+        let top = subject.top();
+        assert!(top == -100);
+    }
+}
+
+mod bottom {
+    use cells::Cells;
+
+    #[test]
+    fn default_value() {
+        let subject = Cells::new();
+        let bottom = subject.bottom();
+        assert!(bottom == 100);
+    }
+}
+
+

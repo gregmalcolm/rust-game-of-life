@@ -3,8 +3,8 @@ extern mod cells;
 use cells::Cells;
 
 pub struct View {
-    width: uint,
-    height: uint,
+    width: int,
+    height: int,
     cells: Cells
 }
 
@@ -12,7 +12,7 @@ impl View {
 
     pub fn new() -> View {
         let mut cells = Cells::new();
-        cells.randomize(60, 26, 10);
+        cells.randomize(10);
         let view = View { width: 60,
                           height: 30,
                           cells: cells};
@@ -38,7 +38,11 @@ impl View {
     fn render(&self) {
         self.moveCursor(0,0);
 
-        let live_cells = self.cells.live_cells();
+
+        let live_cells = self.cells.live_cells((-self.width/2) as int,
+                                               (-self.height/2) as int,
+                                               self.width,
+                                               self.height);
         for cell in live_cells.iter() {
             self.moveCursor(cell.x as uint, cell.y as uint);
             print("*");
